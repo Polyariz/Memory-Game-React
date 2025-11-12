@@ -1,0 +1,48 @@
+name: memory_game_flutter
+description: Memory Game портированная на Flutter из React версии
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State management
+  provider: ^6.1.1
+
+  # Supabase для рейтинга
+  supabase_flutter: ^2.0.0
+
+  # UI компоненты
+  confetti: ^0.7.0
+
+  # Иконки
+  cupertino_icons: ^1.0.2
+
+  # Таймер
+  timer_count_down: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/question.png
+    - assets/images/bun.svg
+    - assets/images/deno.svg
+    - assets/images/docker.svg
+    - assets/images/redis.svg
+    - assets/images/vitejs.svg
+    - assets/images/github.svg
+    - assets/images/javascript.svg
+    - assets/images/supabase.svg
+    - assets/images/svelte.svg
+    - assets/images/vscode.svg

@@ -14,6 +14,8 @@ class CardsGrid extends StatefulWidget {
 
 class _CardsGridState extends State<CardsGrid> {
   late ConfettiController _confettiController;
+  int _previousLevel = 3;
+  int _previousOpenedCount = 0;
 
   @override
   void initState() {
@@ -33,13 +35,23 @@ class _CardsGridState extends State<CardsGrid> {
   Widget build(BuildContext context) {
     return Consumer<GameState>(
       builder: (context, gameState, child) {
-        // Запускаем конфетти при завершении уровня
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (gameState.openedCards.length == gameState.cards.length &&
-              gameState.cards.isNotEmpty) {
-            _confettiController.play();
-          }
-        });
+        // Запускаем конфетти при завершении уровня (только один раз)
+        final currentOpenedCount = gameState.openedCards.length;
+        final currentLevel = gameState.level;
+
+        if (currentOpenedCount == gameState.cards.length &&
+            gameState.cards.isNotEmpty &&
+            (currentLevel != _previousLevel || currentOpenedCount != _previousOpenedCount)) {
+          // Уровень завершен, запускаем конфетти
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              _confettiController.play();
+            }
+          });
+        }
+
+        _previousLevel = currentLevel;
+        _previousOpenedCount = currentOpenedCount;
 
         return Stack(
           children: [

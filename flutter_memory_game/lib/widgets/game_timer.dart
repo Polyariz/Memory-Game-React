@@ -53,11 +53,16 @@ class _GameTimerState extends State<GameTimer> {
     return Consumer<GameState>(
       builder: (context, gameState, child) {
         // Управление таймером в зависимости от состояния игры
-        if (gameState.isTimerRunning && _timer?.isActive != true) {
-          _startTimer(gameState);
-        } else if (!gameState.isTimerRunning && _timer?.isActive == true) {
-          _stopTimer();
-        }
+        // Используем addPostFrameCallback чтобы избежать вызовов setState во время build
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            if (gameState.isTimerRunning && _timer?.isActive != true) {
+              _startTimer(gameState);
+            } else if (!gameState.isTimerRunning && _timer?.isActive == true) {
+              _stopTimer();
+            }
+          }
+        });
 
         return Container(
           margin: const EdgeInsets.symmetric(vertical: 20),
@@ -65,7 +70,7 @@ class _GameTimerState extends State<GameTimer> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _seconds == 0 ? '60' : '$_seconds',
+                '$_seconds',
                 style: const TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -75,7 +80,7 @@ class _GameTimerState extends State<GameTimer> {
               const SizedBox(width: 7),
               const Text(
                 'Sec',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:flutter_svg/flutter_svg.dart';
 import '../models/card_item.dart';
 
 /// Виджет карточки с анимацией переворота (аналог Item.jsx)
@@ -107,6 +108,8 @@ class _MemoryCardState extends State<MemoryCard>
 
   /// Передняя сторона карточки (с изображением)
   Widget _buildCardFront() {
+    final isSvg = widget.card.imagePath.toLowerCase().endsWith('.svg');
+
     return Container(
       width: 105,
       height: 105,
@@ -116,19 +119,29 @@ class _MemoryCardState extends State<MemoryCard>
         border: Border.all(color: Colors.grey),
       ),
       child: Center(
-        child: Image.asset(
-          widget.card.imagePath,
-          width: 80,
-          height: 80,
-          errorBuilder: (context, error, stackTrace) {
-            // Если изображение не загрузилось, показываем иконку
-            return Icon(
-              _getIconForImage(widget.card.imagePath),
-              size: 60,
-              color: const Color(0xFF7FBFFF),
-            );
-          },
-        ),
+        child: isSvg
+            ? SvgPicture.asset(
+                widget.card.imagePath,
+                width: 80,
+                height: 80,
+                placeholderBuilder: (context) => Icon(
+                  _getIconForImage(widget.card.imagePath),
+                  size: 60,
+                  color: const Color(0xFF7FBFFF),
+                ),
+              )
+            : Image.asset(
+                widget.card.imagePath,
+                width: 80,
+                height: 80,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    _getIconForImage(widget.card.imagePath),
+                    size: 60,
+                    color: const Color(0xFF7FBFFF),
+                  );
+                },
+              ),
       ),
     );
   }

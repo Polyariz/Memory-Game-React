@@ -19,11 +19,11 @@ dependencies:
   # UI компоненты
   confetti: ^0.7.0
 
+  # SVG поддержка
+  flutter_svg: ^2.0.9
+
   # Иконки
   cupertino_icons: ^1.0.2
-
-  # Таймер
-  timer_count_down: ^2.2.2
 
 dev_dependencies:
   flutter_test:
